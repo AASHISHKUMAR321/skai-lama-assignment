@@ -8,16 +8,22 @@ const routes = require("./routes");
 const app = express();
 const PORT = process.env.PORT || 3001;
 
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
-app.use(cookieParser());
 app.use(
   cors({
-    origin: process.env.CLIENT_URL || 'https://skai-lama-assignment-a5pi.vercel.app',
-    methods:['POST','GET','DELETE','PUT','PATCH','OPTIONS'],
+    origin: [
+      'http://localhost:5173',
+      'https://skai-lama-assignment-a5pi.vercel.app',
+      'https://skai-lama-assignment-xi.vercel.app',
+      'https://skai-lama-assignment-aashishkumar321s-projects.vercel.app'
+    ],
+    methods: ['POST', 'GET', 'DELETE', 'PUT', 'PATCH', 'OPTIONS'],
     credentials: true,
   })
 );
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+app.use(cookieParser());
+
 
 
 
