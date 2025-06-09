@@ -24,6 +24,11 @@ const LoginPage = () => {
       const res = await axios.post(`${import.meta.env.VITE_API_BASE_URL}/api/user/login`, {
         email,
         password,
+      }, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+        withCredentials: true,
       });
 
       console.log("ertyui", res.data);
