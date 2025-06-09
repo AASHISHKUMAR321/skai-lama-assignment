@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import Cookies from "js-cookie";
+
 import logo_purple from "../assets/logo_purple.png";
 import logo_white from "../assets/logo_white no bg.png";
 import bg from "../assets/bg.png";
@@ -27,8 +27,6 @@ const LoginPage = () => {
       });
 
       console.log("ertyui", res.data);
-      Cookies.set("token", res.data.token, { expires: 7 });
-
       navigate("/project", { state: { userData: res.data.user } });
     } catch (err) {
       if (err.response && err.response.data && err.response.data.message) {

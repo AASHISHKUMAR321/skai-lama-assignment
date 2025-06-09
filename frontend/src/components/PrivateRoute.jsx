@@ -1,29 +1,33 @@
 import { Navigate } from "react-router-dom";
-import Cookies from "js-cookie";
+import { useEffect, useState } from "react";
+import axios from "axios";
 import { jwtDecode } from "jwt-decode";
 
 const PrivateRoute = ({ children }) => {
-  const token = Cookies.get("token");
+  const [isAuthenticated, setIsAuthenticated] = useState(null);
 
-  if (!token) {
+  useEffect(() => {
+    const checkAuth = async () => {
+      try {
+        await axios.get("https://skai-lama-assignment-4swq.onrender.com/api/user/me", { withCredentials: true });
+        setIsAuthenticated(true);
+      } catch (err) {
+        setIsAuthenticated(false);
+      }
+    };
+    checkAuth();
+  }, []);
+
+  if (isAuthenticated === null) {
+    // Optionally, show a loading spinner here
+    return null;
+  }
+
+  if (!isAuthenticated) {
     return <Navigate to="/" replace />;
   }
 
-  try {
-    const decoded = jwtDecode(token);
-    const currentTime = Math.floor(Date.now() / 1000);
-
-    if (decoded.exp && decoded.exp < currentTime) {
-      Cookies.remove("token"); 
-      return <Navigate to="/" replace />;
-    }
-
-    return children;
-  } catch (err) {
-    console.err(err);
-    Cookies.remove("token");
-    return <Navigate to="/" replace />;
-  }
+  return children;
 };
 
 export default PrivateRoute;

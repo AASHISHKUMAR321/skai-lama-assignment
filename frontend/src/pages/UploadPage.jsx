@@ -16,7 +16,7 @@ import CreateEpisodes from "../components/CreateEpisodes";
 import EditTranscript from "../components/EditTranscript";
 import { Link } from "react-router-dom";
 import { CiLogout } from "react-icons/ci";
-import Cookies from "js-cookie";
+
 import { useNavigate } from "react-router-dom";
 
 const UploadPage = () => {
@@ -84,20 +84,13 @@ const UploadPage = () => {
   const handleLogout = async (e) => {
     e.preventDefault();
     try {
-      const token = Cookies.get("token");
-
       await axios.post(
         "https://skai-lama-assignment-4swq.onrender.com/api/user/logout",
         {},
         {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
           withCredentials: true,
         }
       );
-
-      Cookies.remove("token");
       navigate("/");
     } catch (error) {
       console.error("Logout failed", error);
