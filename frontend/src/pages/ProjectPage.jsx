@@ -16,7 +16,7 @@ const ProjectPage = () => {
   const fetchProjects = async () => {
     try {
       const response = await axios.get(
-        "https://skai-lama-assignment-4swq.onrender.com/api/project",
+        `${import.meta.env.VITE_API_BASE_URL}/api/project`,
         {
           withCredentials: true,
           headers: {

@@ -9,7 +9,7 @@ const PrivateRoute = ({ children }) => {
   useEffect(() => {
     const checkAuth = async () => {
       try {
-        await axios.get("https://skai-lama-assignment-4swq.onrender.com/api/user/me", { withCredentials: true });
+        await axios.get(`${import.meta.env.VITE_API_BASE_URL}/api/user/me`, { withCredentials: true });
         setIsAuthenticated(true);
       } catch (err) {
         setIsAuthenticated(false);

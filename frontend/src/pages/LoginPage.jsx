@@ -21,7 +21,7 @@ const LoginPage = () => {
     setError("");
 
     try {
-      const res = await axios.post("https://skai-lama-assignment-4swq.onrender.com/api/user/login", {
+      const res = await axios.post(`${import.meta.env.VITE_API_BASE_URL}/api/user/login`, {
         email,
         password,
       });

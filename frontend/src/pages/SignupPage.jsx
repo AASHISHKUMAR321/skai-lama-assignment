@@ -20,7 +20,7 @@ const SignupPage = () => {
     setError("");
 
     try {
-      const res = await axios.post("https://skai-lama-assignment-4swq.onrender.com/api/user/register", {
+      const res = await axios.post(`${import.meta.env.VITE_API_BASE_URL}/api/user/register`, {
         username,
         email,
         password,
