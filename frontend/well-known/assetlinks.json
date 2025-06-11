@@ -1,0 +1,8 @@
+[{
+      "relation": ["delegate_permission/common.handle_all_urls"],
+      "target": {
+        "namespace": "android_app",
+        "package_name": "app.vercel.skai_lama_assignment_xi.twa",
+        "sha256_cert_fingerprints": ["68:4F:87:74:28:71:B2:AB:D3:06:88:7E:B5:A3:B8:3D:D4:60:3F:C8:60:0C:87:35:AF:99:0F:68:2D:C0:52:56"]
+      }
+    }]
