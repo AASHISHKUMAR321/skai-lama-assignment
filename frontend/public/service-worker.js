@@ -24,6 +24,23 @@
         'cdn.jsdelivr.net'
     ]
 
+    // Cache Name
+    const CACHE_NAME = 'skai-lama-cache-v1'
+    
+    // Assets to cache
+    const CACHED_ASSETS = [
+        '/',
+        '/index.html',
+        '/manifest.json',
+        '/icons/icon-512x512.png',
+        '/icons/icon-192x192.png',
+        '/icons/icon-144x144.png',
+        '/icons/icon-96x96.png',
+        '/icons/icon-72x72.png',
+        '/icons/icon-48x48.png',
+        '/screenshots/screenshot1.png'
+    ]
+
     // The Util Function to hack URLs of intercepted requests
     const getFixedUrl = (req) => {
         var now = Date.now()
@@ -47,13 +64,39 @@
     }
 
     /**
+     *  @Lifecycle Install
+     *  Precache static resources for offline use
+     */
+    self.addEventListener('install', event => {
+      event.waitUntil(
+        caches.open(CACHE_NAME)
+          .then(cache => {
+            console.log('Caching app assets');
+            return cache.addAll(CACHED_ASSETS);
+          })
+      );
+      // Force the waiting service worker to become the active service worker
+      self.skipWaiting();
+    });
+
+    /**
      *  @Lifecycle Activate
      *  New one activated when old isnt being used.
-     *
-     *  waitUntil(): activating ====> activated
+     *  Clean up old caches
      */
     self.addEventListener('activate', event => {
-      event.waitUntil(self.clients.claim())
+      event.waitUntil(
+        caches.keys().then(cacheNames => {
+          return Promise.all(
+            cacheNames.map(cacheName => {
+              if (cacheName !== CACHE_NAME) {
+                console.log('Deleting old cache:', cacheName);
+                return caches.delete(cacheName);
+              }
+            })
+          );
+        }).then(() => self.clients.claim())
+      );
     })
 
     /**
@@ -85,7 +128,7 @@
 
         // Update the cache with the version we fetched (only for ok status)
         event.waitUntil(
-        Promise.all([fetchedCopy, caches.open("pwa-cache")])
+        Promise.all([fetchedCopy, caches.open(CACHE_NAME)])
             .then(([response, cache]) => response.ok && cache.put(event.request, response))
             .catch(_ => { /* eat any errors */ })
         )
